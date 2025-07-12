@@ -17,23 +17,23 @@ const client = new DynamoDBClient({
 
 const docClient = DynamoDBDocumentClient.from(client);
 
-export const scanItems = async () => {
-  const command = new ScanCommand({ TableName: "Todos" });
+export const getPets = async () => {
+  const command = new ScanCommand({ TableName: "Pets" });
   const result = await docClient.send(command);
   return result.Items;
 };
 
-export const addItem = async (item) => {
+export const addPet = async (item) => {
   const command = new PutCommand({
-    TableName: "Todos",
+    TableName: "Pets",
     Item: item,
   });
   await docClient.send(command);
 };
 
-export const updateItem = async (id, updates) => {
+export const updatePet = async (id, updates) => {
   const command = new UpdateCommand({
-    TableName: "Todos",
+    TableName: "Pets",
     Key: { id },
     UpdateExpression: "set #t = :t",
     ExpressionAttributeNames: {
@@ -46,9 +46,9 @@ export const updateItem = async (id, updates) => {
   await docClient.send(command);
 };
 
-export const deleteItem = async (id) => {
+export const deletePet = async (id) => {
   const command = new DeleteCommand({
-    TableName: "Todos",
+    TableName: "Pets",
     Key: { id },
   });
   await docClient.send(command);

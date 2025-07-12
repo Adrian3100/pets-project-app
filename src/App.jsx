@@ -4,48 +4,102 @@ import Footer from "./components/Footer.jsx";
 
 import React, { useEffect, useState } from "react";
 
-import {
-  scanItems,
-  addItem,
-  updateItem,
-  deleteItem,
-} from "./components/dynamo";
+import { getPets, addPet, updatePet, deletePet } from "./components/dynamo";
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [pets, setPets] = useState([]);
+  const [form, setForm] = useState({ name: "", species: "", status: "" });
+  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
-    fetchTodos();
+    fetchPets();
   }, []);
 
-  const fetchTodos = async () => {
-    const items = await scanItems();
-
-    setTodos(items);
+  const fetchPets = async () => {
+    try {
+      const data = await getPets();
+      setPets(data);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
   };
 
-  const handleAdd = async () => {
-    await addItem({ id: Date.now().toString(), task: "New Task" });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const pet = {
+        id: editingId || Date.now().toString(),
+        ...form,
+      };
 
-    fetchTodos();
+      if (editingId) {
+        await updatePet(editingId, form);
+      } else {
+        await addPet(pet);
+      }
+
+      setForm({ name: "", species: "", status: "" });
+      setEditingId(null);
+      fetchPets();
+    } catch (error) {
+      console.error("Submit error:", error);
+    }
+  };
+
+  const handleEdit = (pet) => {
+    setForm({ name: pet.name, species: pet.species, status: pet.status });
+    setEditingId(pet.id);
   };
 
   const handleDelete = async (id) => {
-    await deleteItem(id);
-
-    fetchTodos();
+    try {
+      await deletePet(id);
+      fetchPets();
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
   };
 
   return (
-    <div>
-      <h1>Todo List</h1>
+    <div style={{ padding: 20, fontFamily: "Arial" }}>
+      <p style={{ color: "green" }}>Pets , Pets , Pets !!</p>
+      <h1 className="text-4xl font-bold text-green-500"> Pet Adoption Center</h1>
 
-      <button onClick={handleAdd}>Add Todo</button>
+      <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
+        <input
+          placeholder="Name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          required
+        />
+        <input
+          placeholder="Species"
+          value={form.species}
+          onChange={(e) => setForm({ ...form, species: e.target.value })}
+          required
+        />
+        <input
+          placeholder="Status (available, adopted)"
+          value={form.status}
+          onChange={(e) => setForm({ ...form, status: e.target.value })}
+          required
+        />
+        <button type="submit">{editingId ? "Update" : "Add"} Pet</button>
+      </form>
 
       <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            {todo.task} <button onClick={() => handleDelete(todo.id)}>X</button>
+        {pets.map((pet) => (
+          <li key={pet.id} style={{ marginBottom: 10 }}>
+            <strong>{pet.name}</strong> ({pet.species}) - {pet.status}
+            <button onClick={() => handleEdit(pet)} style={{ marginLeft: 10 }}>
+               Edit
+            </button>
+            <button
+              onClick={() => handleDelete(pet.id)}
+              style={{ marginLeft: 5 }}
+            >
+               Delete
+            </button>
           </li>
         ))}
       </ul>
@@ -53,12 +107,4 @@ function App() {
   );
 }
 
-export default function App() {
-  return (
-    <>
-      <Header />
-      <Main />
-      <Footer />
-    </>
-  );
-}
+export default App;
