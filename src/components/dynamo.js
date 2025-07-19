@@ -6,6 +6,7 @@ import {
   UpdateCommand,
   DeleteCommand,
 } from "@aws-sdk/lib-dynamodb";
+ console.log("test", process.env.REACT_APP_AWS_REGION);
 
 const client = new DynamoDBClient({
   region: process.env.REACT_APP_AWS_REGION,
@@ -16,6 +17,14 @@ const client = new DynamoDBClient({
 });
 
 const docClient = DynamoDBDocumentClient.from(client);
+
+export async function createPets(pets) { 
+    const command = new PutCommand({
+        TableName:"Pets",
+        Item: pets,
+    });
+    await docClient.send(command);
+};
 
 export const getPets = async () => {
   const command = new ScanCommand({ TableName: "Pets" });

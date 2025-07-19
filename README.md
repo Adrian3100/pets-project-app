@@ -1,86 +1,72 @@
-# React + Webpack Starter (Codex Template)
+# 🐾 Pet Adoption Center
 
-Welcome to your React exploration! 🎉 Over the past week we’ve dived deep into Webpack—now it’s time to build with React while still seeing Webpack under the hood. This template:
-
-- **Automatically scaffolds** a working React + Webpack project via `npx`.
-- **Keeps** the full Webpack config, Babel settings, and CSS pipeline in your repo.
-- **Reduces** setup errors so you can focus on React concepts.
+A responsive, full-stack React application that allows users to manage pet adoption listings. Built with a manual Webpack/Babel setup, styled using Tailwind CSS, and powered by AWS DynamoDB for persistent data storage.
 
 ---
 
-## 🚀 Getting Started
+## 📸 Demo
 
-npx react-webpack-codex my-app
-cd my-app
-npm install (installs React, Webpack, Babel, loaders, etc.)
-npm run dev (starts dev server at http://localhost:3000)
-
-_(To build for production: `npm run build` → `dist/`.)_
+![Screenshot](./screenshot.png) <!-- You can replace this with your actual screenshot file name -->
 
 ---
 
-## 🗂 Project Structure
+## 🚀 Features
 
-```
+- ✅ Add new pets with name, species, status, and image
+- ✅ Edit existing pet records
+- ✅ Delete pets from the list
+- ✅ Filter pets by status: `All`, `Available`, or `Adopted`
+- ✅ Responsive, clean UI with Tailwind CSS
+- ✅ Data stored in AWS DynamoDB
+- ✅ Manually configured Webpack and Babel setup
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Description |
+|----------------|------------------------------------|
+| React | UI library for building components |
+| Tailwind CSS | Utility-first CSS framework |
+| AWS DynamoDB | NoSQL database for persistent data |
+| AWS SDK v3 | AWS client for JavaScript (DynamoDB) |
+| Webpack | Manual bundler setup |
+| Babel | JavaScript compiler |
+
+---
+
+## 🧱 Project Structure
 my-app/
-├─ public/
-│  └─ index.html
-├─ src/
-│  ├─ app.css
-│  ├─ index.jsx
-│  ├─ App.jsx
-│  └─ components/
-│     ├─ Header.jsx
-│     ├─ Main.jsx
-│     ├─ Footer.jsx
-│     └─ ui/
-│        └─ Card.jsx
-├─ .babelrc
-├─ package.json
-└─ webpack.config.mjs
-```
 
----
+│
 
-## 🔧 Available Scripts
+├── src/
 
-- **npm run dev**
-  Starts the Webpack Dev Server with fast refresh on port 3000.
+│   ├── components/
 
-- **npm run build**
-  Bundles your app for production into `./dist`.
+│   │   └── dynamo.js         # DynamoDB logic (CRUD)
 
-- **npm run preview**
-  Serves the production build locally at http://localhost:5000.
+│   ├── App.jsx               # Main component logic
 
----
+│   ├── Main.jsx              # React entry point
 
-## ✏️ Customizing for Your Own Projects
+│   ├── index.html            # HTML template
 
-1. **Remove starter components**
-   `rm -rf src/components && mkdir src/components`
+│
 
-2. **Clear out the App return**
-   In `src/App.jsx`, replace the existing JSX with your own:
+├── styles/
 
-   ```jsx
-   export default function App() {
-     return <div>{/* Your custom React code here */}</div>;
-   }
-   ```
+│   └── app.css               # Tailwind imports & custom CSS
 
-3. **Add new components** under `src/components/`.
+│
 
-4. **Style as you go** – rename `app.css` → `app.scss` later if you want SCSS support.
+├── webpack.config.js         # Webpack configuration
 
----
+├── postcss.config.js         # Tailwind + PostCSS config
 
-## ℹ️ Why This Template?
+├── tailwind.config.js        # Tailwind theme customization
 
-- **Exposes Webpack config** so you understand loader/plugin setup.
-- **Automates** repetitive setup via `npx`, reducing “it works on my machine” issues.
-- **Defaults** to port 3000, matching most React tutorials.
-- **SCSS-ready** out of the box—just rename `.css` → `.scss` when ready.
+├── .env                      # AWS credentials (not committed)
 
-Happy coding!
-Feel free to peek into any config files when you’re curious—everything you need is right here.
+├── package.json              # Dependencies
+

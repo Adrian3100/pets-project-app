@@ -60,6 +60,8 @@ export default (_env, argv) => {
       prod &&
        new webpack.DefinePlugin({
         "process.env.REACT_APP_AWS_REGION": JSON.stringify(process.env.REACT_APP_AWS_REGION),
+        "process.env.REACT_APP_AWS_ACCESS_KEY_ID": JSON.stringify(process.env.REACT_APP_AWS_ACCESS_KEY_ID),
+        "process.env.REACT_APP_AWS_SECRECT_ACCESS_KEY": JSON.stringify(process.env.REACT_APP_AWS_SECRECT_ACCESS_KEY)
        })
     ].filter(Boolean)
   }}
