@@ -6,7 +6,7 @@ import webpack from "webpack";
 
 export default (_env, argv) => {
   const prod = argv.mode === "production";
-
+  console.log("prod")
   return {
     entry: "./src/index.jsx",
     output: {
